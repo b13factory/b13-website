@@ -11,14 +11,14 @@
   "dependencies": {
     "gray-matter": "^4.0.3",
     "lucide-react": "0.292.0",
-    "next": "14.0.0",
+    "next": "^14.2.33",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "^5.13.5",
+    "@netlify/plugin-nextjs": "^5.14.5",
     "autoprefixer": "^10.4.16",
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.0",

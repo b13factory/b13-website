@@ -2,39 +2,38 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+
   images: {
-    domains: ['images.unsplash.com', 'via.placeholder.com'],
+    domains: [
+    'images.unsplash.com',
+    'via.placeholder.com',
+    'b13factory-garmentadv.netlify.app' // ✅ domain Netlify kamu
+  ],
     formats: ['image/avif', 'image/webp'],
   },
+
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // Optimize for modern browsers
-  experimental: {
-    modern: true,
 
-  // Optimize chunk splitting untuk better code splitting
+  // pindahkan webpack ke sini (root), bukan ke experimental!
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      // Split vendor chunks untuk better caching
       config.optimization.splitChunks = {
         chunks: 'all',
         cacheGroups: {
           default: false,
           vendors: false,
-          // Vendor chunk untuk react & react-dom
           react: {
             name: 'react-vendor',
             test: /[\/]node_modules[\/](react|react-dom)[\/]/,
             priority: 40,
           },
-          // Vendor chunk untuk lucide-react icons
           icons: {
             name: 'icons-vendor',
             test: /[\/]node_modules[\/]lucide-react[\/]/,
             priority: 30,
           },
-          // Common chunks untuk code yang digunakan di multiple pages
           common: {
             name: 'common',
             minChunks: 2,
@@ -46,8 +45,7 @@ const nextConfig = {
     }
     return config;
   },
-  },
-  // Reduce JavaScript payload
+
   productionBrowserSourceMaps: false,
 };
 
