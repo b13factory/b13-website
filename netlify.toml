@@ -7,7 +7,7 @@
   NEXT_TELEMETRY_DISABLED = "1"
 
 [context.production.environment]
-  NEXT_PUBLIC_SITE_URL = "https://b13factory-garmentadv.netlify.app"
+  NEXT_PUBLIC_SITE_URL = "https://b13factory-garment.netlify.app"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
