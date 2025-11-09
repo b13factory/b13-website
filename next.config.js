@@ -4,11 +4,7 @@ const nextConfig = {
   swcMinify: true,
 
   images: {
-    domains: [
-    'images.unsplash.com',
-    'via.placeholder.com',
-    'b13factory-garmentadv.netlify.app' // ✅ domain Netlify kamu
-  ],
+    domains: ['images.unsplash.com', 'via.placeholder.com'],
     formats: ['image/avif', 'image/webp'],
   },
 
