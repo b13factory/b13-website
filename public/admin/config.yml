@@ -10,9 +10,9 @@ backend:
     deleteMedia: 'Delete “{{path}}”'
 
 # publish_mode: editorial_workflow  # Disabled untuk immediate publish
-site_url: https://b13factory-garmentadv.netlify.app
-display_url: https://b13factory-garmentadv.netlify.app
-logo_url: https://b13factory-garmentadv.netlify.app/logo.png
+site_url: https://b13factory-garment.netlify.app/
+display_url: https://b13factory-garment.netlify.app/
+logo_url: https://b13factory-garment.netlify.app/logo.png
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
