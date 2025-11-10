@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
+import { throttle } from '@/utils/animations';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [siteConfig, setSiteConfig] = useState(null);
+  const { siteConfig } = useSiteConfig();
   const router = useRouter();
   const isHomePage = router.pathname === '/';
 
@@ -19,28 +21,13 @@ export default function Header() {
   const isArtikelDetailPage = router.pathname.startsWith('/artikel/') && router.pathname !== '/artikel';
   const isDetailPage = isProductDetailPage || isPortfolioDetailPage || isArtikelDetailPage;
 
-  // Load site config dari CMS
   useEffect(() => {
-    const loadSiteConfig = async () => {
-      try {
-        const response = await fetch('/api/content/site-config');
-        if (response.ok) {
-          const data = await response.json();
-          setSiteConfig(data);
-        }
-      } catch (error) {
-        console.error('Error loading site config:', error);
-      }
-    };
-    loadSiteConfig();
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
+    // Throttled scroll handler untuk performance
+    const handleScroll = throttle(() => {
       setIsScrolled(window.scrollY > 10);
-    };
+    }, 100);
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

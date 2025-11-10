@@ -1,37 +1,13 @@
 // website/src/components/layout/Footer.jsx
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Mail, Phone, Clock } from 'lucide-react';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
 
 export default function Footer() {
-  const [siteConfig, setSiteConfig] = useState(null);
+  const { siteConfig, isLoading } = useSiteConfig();
 
-  // Load site config dari CMS
-  useEffect(() => {
-    const loadSiteConfig = async () => {
-      try {
-        const response = await fetch('/api/content/site-config');
-        if (response.ok) {
-          const data = await response.json();
-          setSiteConfig(data);
-        }
-      } catch (error) {
-        console.error('Error loading site config:', error);
-        // Set default values
-        setSiteConfig({
-          title: 'B13 Factory',
-          description: 'Specialist dalam garment dan advertising',
-          contact_email: 'info@b13factory.com',
-          contact_phone: '+62 812-3456-7890',
-          address: 'Jl. Arowana Perum Kebon Agung Indah, Jember, Indonesia'
-        });
-      }
-    };
-    loadSiteConfig();
-  }, []);
-
-  if (!siteConfig) {
+  if (isLoading || !siteConfig) {
     return null; // Loading state
   }
 
@@ -48,16 +24,6 @@ export default function Footer() {
   const footerLinks = siteConfig?.footer_links 
     ? [...siteConfig.footer_links].sort((a, b) => a.order - b.order)
     : defaultFooterLinks;
-
-  // Social media icons mapping
-  const socialIcons = {
-    facebook: 'https://www.facebook.com',
-    instagram: 'https://www.instagram.com',
-    twitter: 'https://www.twitter.com',
-    linkedin: 'https://www.linkedin.com',
-    whatsapp: 'https://wa.me',
-    tiktok: 'https://www.tiktok.com'
-  };
 
   return (
     <footer className="bg-neutral-900 text-white relative z-10">

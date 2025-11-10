@@ -1,105 +1,31 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Button from '@/components/ui/Button';
-
-
-// Utility functions for dynamic positioning and styling
-const getVerticalAlignment = (vertical) => {
-  switch (vertical) {
-    case 'top': return 'items-start';
-    case 'bottom': return 'items-end';
-    case 'center':
-    default: return 'items-center';
-  }
-};
-
-const getHorizontalAlignment = (horizontal) => {
-  switch (horizontal) {
-    case 'left': return 'justify-start';
-    case 'right': return 'justify-end';
-    case 'center':
-    default: return 'justify-center';
-  }
-};
-
-const getTextAlignment = (textAlign) => {
-  switch (textAlign) {
-    case 'left': return 'text-left';
-    case 'right': return 'text-right';
-    case 'center':
-    default: return 'text-center mx-auto';
-  }
-};
-
-const getTitleSize = (size) => {
-  switch (size) {
-    case 'small': return 'text-2xl sm:text-3xl md:text-4xl';
-    case 'medium': return 'text-3xl sm:text-4xl md:text-5xl';
-    case 'large': return 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl';
-    case 'extra-large': return 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl';
-    default: return 'text-3xl sm:text-4xl md:text-5xl lg:text-7xl';
-  }
-};
-
-const getSubtitleSize = (size) => {
-  switch (size) {
-    case 'small': return 'text-sm sm:text-base md:text-lg';
-    case 'medium': return 'text-base sm:text-lg md:text-xl';
-    case 'large': return 'text-lg sm:text-xl md:text-2xl lg:text-3xl';
-    default: return 'text-base sm:text-lg md:text-xl lg:text-2xl';
-  }
-};
-
-const formatMarkdown = (text) => {
-  if (!text) return '';
-  
-  let html = text;
-  
-  // Bold: **text**
-  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  
-  // Italic: *text*
-  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-  
-  // Line breaks
-  html = html.replace(/\n/g, '<br />');
-  
-  // Bullet lists
-  const lines = html.split('<br />');
-  let inList = false;
-  const processed = lines.map(line => {
-    if (line.trim().match(/^[-*]\s/)) {
-      const content = line.trim().replace(/^[-*]\s/, '');
-      if (!inList) {
-        inList = true;
-        return '<ul class=\"list-disc list-inside\"><li>' + content + '</li>';
-      }
-      return '<li>' + content + '</li>';
-    } else {
-      if (inList) {
-        inList = false;
-        return '</ul>' + line;
-      }
-      return line;
-    }
-  });
-  
-  if (inList) processed.push('</ul>');
-  
-  return processed.join('<br />');
-};
-
+import { useHomeData } from '@/contexts/HomeContext';
+import { 
+  getVerticalAlignment, 
+  getHorizontalAlignment, 
+  getTextAlignment,
+  getTitleSize,
+  getSubtitleSize
+} from '@/utils/positioning';
+import { 
+  getMarqueeBgColor, 
+  getMarqueeTextColor 
+} from '@/utils/colors';
+import { 
+  getAnimationDuration 
+} from '@/utils/animations';
+import { formatMarkdown } from '@/utils/markdown';
 
 export default function HeroBanner() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
-  const [heroData, setHeroData] = useState(null);
-  const [marqueeData, setMarqueeData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [fadeVisible, setFadeVisible] = useState(true);
   const [currentMarqueeIndex, setCurrentMarqueeIndex] = useState(0);
+  const { homeData, isLoading } = useHomeData();
 
   const defaultHeroData = {
     slides: [
@@ -120,41 +46,52 @@ export default function HeroBanner() {
     speed: "medium"
   };
 
-  // Helper function to get background color class
-  const getMarqueeBgColor = (color) => {
-    const colorMap = {
-      'primary': 'bg-primary-600/90',
-      'blue': 'bg-blue-600/90',
-      'green': 'bg-green-600/90',
-      'red': 'bg-red-600/90',
-      'purple': 'bg-purple-600/90',
-      'orange': 'bg-orange-600/90',
-      'teal': 'bg-teal-600/90',
-      'slate': 'bg-slate-600/90',
-      'black': 'bg-black/90'
-    };
-    return colorMap[color] || 'bg-primary-600/90';
-  };
+  // Transform homeData menjadi heroData dan marqueeData
+  const { heroData, marqueeData } = useMemo(() => {
+    if (!homeData) {
+      return { heroData: defaultHeroData, marqueeData: defaultMarqueeData };
+    }
 
-  // Helper function to get text color class
-  const getMarqueeTextColor = (color) => {
-    const colorMap = {
-      'white': 'text-white',
-      'black': 'text-black',
-      'gray': 'text-gray-700'
-    };
-    return colorMap[color] || 'text-white';
-  };
+    // Transform hero banners data dari CMS format ke format slides
+    const heroBanners = homeData.hero_banners || [];
+    
+    const slides = heroBanners.map((banner, index) => ({
+      id: index + 1,
+      image: banner.image || '/uploads/hero-1.jpg',
+      title: banner.title || 'GARMENT AND ADVERTISING',
+      description: banner.subtitle || ' ',
+      button_text: banner.button_text,
+      button_link: banner.button_link,
+      text_position: banner.text_position
+    }));
+    
+    // Fallback jika tidak ada banners
+    if (slides.length === 0) {
+      slides.push({
+        id: 1,
+        image: '/uploads/hero-1.jpg',
+        title: 'GARMENT AND ADVERTISING',
+        description: ' ',
+        button_text: 'Lihat Produk',
+        button_link: '/produk'
+      });
+    }
 
-  // Helper function to get animation duration based on speed
-  const getAnimationDuration = (speed) => {
-    const durationMap = {
-      'slow': 20000,    // 20 seconds
-      'medium': 15000,  // 15 seconds
-      'fast': 10000     // 10 seconds
+    // Get marquee settings from home content
+    const marquee = homeData.marquee_banner;
+    const transformedMarquee = marquee ? {
+      enabled: marquee.enabled !== false,
+      texts: marquee.texts && marquee.texts.length > 0 ? marquee.texts : [{ text: "✦ Buka Setiap Hari Pukul 09.00 - 17.00 WIB" }],
+      bg_color: marquee.bg_color || 'primary',
+      text_color: marquee.text_color || 'white',
+      speed: marquee.speed || 'medium'
+    } : defaultMarqueeData;
+    
+    return { 
+      heroData: { slides }, 
+      marqueeData: transformedMarquee 
     };
-    return durationMap[speed] || 15000;
-  };
+  }, [homeData]);
 
   // Use useCallback untuk stable function references
   const nextSlide = useCallback(() => {
@@ -171,78 +108,7 @@ export default function HeroBanner() {
     });
   }, [heroData]);
 
-  // Load data
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        setIsLoading(true);
-
-        // Fetch home content
-        const homeRes = await fetch('/api/content/home');
-        
-        if (homeRes.ok) {
-          const homeData = await homeRes.json();
-          
-          if (homeData.success && homeData.home) {
-            // Transform hero banners data dari CMS format ke format slides
-            const heroBanners = homeData.home.hero_banners || [];
-            
-            const slides = heroBanners.map((banner, index) => ({
-              id: index + 1,
-              image: banner.image || '/uploads/hero-1.jpg',
-              title: banner.title || 'GARMENT AND ADVERTISING',
-              description: banner.subtitle || ' ',
-              button_text: banner.button_text,
-              button_link: banner.button_link,
-              text_position: banner.text_position
-            }));
-            
-            // Fallback jika tidak ada banners
-            if (slides.length === 0) {
-              slides.push({
-                id: 1,
-                image: '/uploads/hero-1.jpg',
-                title: 'GARMENT AND ADVERTISING',
-                description: ' ',
-                button_text: 'Lihat Produk',
-                button_link: '/produk'
-              });
-            }
-            
-            setHeroData({ slides });
-            
-            // Get marquee settings from home content
-            const marquee = homeData.home.marquee_banner;
-            if (marquee) {
-              setMarqueeData({
-                enabled: marquee.enabled !== false, // default true
-                texts: marquee.texts && marquee.texts.length > 0 ? marquee.texts : [{ text: "✦ Buka Setiap Hari Pukul 09.00 - 17.00 WIB" }],
-                bg_color: marquee.bg_color || 'primary',
-                text_color: marquee.text_color || 'white',
-                speed: marquee.speed || 'medium'
-              });
-            } else {
-              setMarqueeData(defaultMarqueeData);
-            }
-          } else {
-            throw new Error('Invalid data format');
-          }
-        } else {
-          throw new Error('Failed to fetch home content');
-        }
-      } catch (error) {
-        console.log('Using default data:', error.message);
-        setHeroData(defaultHeroData);
-        setMarqueeData(defaultMarqueeData);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadData();
-  }, []); // Empty dependency array
-
-  // Auto slide effect - dipisah dari effect utama
+  // Auto slide effect
   useEffect(() => {
     if (isLoading || !heroData?.slides || heroData.slides.length <= 1 || isHovering) {
       return;
@@ -273,7 +139,7 @@ export default function HeroBanner() {
     return () => clearInterval(restartInterval);
   }, [marqueeData]);
 
-  // Jangan render sampai data ready dan loading selesai
+  // Loading state
   if (isLoading || !heroData || !marqueeData) {
     return (
       <section 
