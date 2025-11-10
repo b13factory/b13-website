@@ -1,7 +1,7 @@
 // website/src/components/home/FeaturedProducts.jsx
 'use client';
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import Image from 'next/image';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { useProducts } from '@/contexts/ProductsContext';
@@ -161,7 +161,7 @@ export default function FeaturedProducts() {
                     {/* Image Background */}
                     <div className="absolute inset-0" style={{ contain: 'paint' }}>
                       {featuredProduct.image ? (
-                        <Image
+                        <OptimizedImage
                           src={featuredProduct.image}
                           alt={featuredProduct.name}
                           fill
@@ -169,7 +169,6 @@ export default function FeaturedProducts() {
                           priority
                           quality={85}
                           sizes="(max-width: 1024px) 100vw, 66vw"
-                          style={{ willChange: 'transform' }}
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-primary-100 to-secondary-100"></div>
@@ -209,7 +208,7 @@ export default function FeaturedProducts() {
                     <div className="absolute inset-0 rounded-3xl overflow-hidden">
                       <div className="absolute inset-0">
                         {secondProduct.image ? (
-                          <Image
+                          <OptimizedImage
                             src={secondProduct.image}
                             alt={secondProduct.name}
                             fill
@@ -217,7 +216,6 @@ export default function FeaturedProducts() {
                             loading="lazy"
                             quality={80}
                             sizes="34vw"
-                            style={{ willChange: 'transform' }}
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-secondary-100 to-primary-100"></div>
@@ -272,7 +270,7 @@ export default function FeaturedProducts() {
                           <div className="absolute inset-0 rounded-2xl overflow-hidden">
                             <div className="absolute inset-0">
                               {product.image ? (
-                                <Image
+                                <OptimizedImage
                                   src={product.image}
                                   alt={product.name}
                                   fill
@@ -280,7 +278,6 @@ export default function FeaturedProducts() {
                                   loading="lazy"
                                   quality={75}
                                   sizes="(max-width: 640px) 70vw, (max-width: 768px) 45vw, (max-width: 1024px) 30vw, 23vw"
-                                  style={{ willChange: 'transform' }}
                                 />
                               ) : (
                                 <div className="w-full h-full bg-gradient-to-br from-neutral-200 to-neutral-300"></div>

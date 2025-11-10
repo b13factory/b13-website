@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import Image from 'next/image';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { useHomeData } from '@/contexts/HomeContext';
@@ -181,7 +181,7 @@ export default function HeroBanner() {
             style={{ willChange: index === safeCurrentSlide ? 'opacity' : 'auto' }}
           >
             {slide.image ? (
-              <Image
+              <OptimizedImage
                 src={slide.image}
                 alt={slide.title}
                 fill

@@ -1,7 +1,7 @@
 // website/src/components/home/PortfolioShowcase.jsx
 'use client';
 import { useMemo } from 'react';
-import Image from 'next/image';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 import Button from '@/components/ui/Button';
 import { ChevronRight, Plus } from 'lucide-react';
 import { usePortfolio } from '@/contexts/PortfolioContext';
@@ -106,7 +106,7 @@ export default function PortfolioShowcase() {
               {/* Image Container - Aspect ratio 16:10 - Optimized with Next Image */}
               <div className="aspect-[16/10] bg-gradient-to-br from-neutral-100 to-neutral-200 relative overflow-hidden">
                 {item.image ? (
-                  <Image 
+                  <OptimizedImage 
                     src={item.image} 
                     alt={item.name}
                     fill
