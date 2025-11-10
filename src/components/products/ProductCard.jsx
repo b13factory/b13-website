@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Download } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
@@ -7,8 +8,8 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
       <div className="bg-white rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-3 sm:p-4 md:p-6">
         <div className="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-6">
           <div className="w-full md:w-48 lg:w-56 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg overflow-hidden relative flex-shrink-0" style={{ aspectRatio: '4/5' }}>
-        {product.stockType && (
-          <div className="absolute top-2 right-2 z-10">
+            {product.stockType && (
+              <div className="absolute top-2 right-2 z-10">
                 <span className={`px-2 py-0.5 sm:py-1 rounded-full text-xs font-medium ${
                   product.stockType === 'ready' 
                     ? 'bg-green-100 text-green-700' 
@@ -19,20 +20,21 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
               </div>
             )}
             {product.card_image || product.image ? (
-          <img 
-            src={product.card_image || product.image} 
-            alt={product.name}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = '/uploads/placeholder.jpg';
-            }}
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-center text-neutral-600 px-2">
-            <p className="text-xs sm:text-sm">No Image</p>
-          </div>
-        )}
+              <img 
+                src={product.card_image || product.image} 
+                alt={product.name}
+                className="w-full h-full object-cover"
+                loading="lazy"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = '/uploads/placeholder.jpg';
+                }}
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-center text-neutral-600 px-2">
+                <p className="text-xs sm:text-sm">No Image</p>
+              </div>
+            )}
           </div>
           <div className="flex-1">
             <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-1 sm:mb-2 text-neutral-900 line-clamp-2">
@@ -85,7 +87,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
 
   // Grid View - Mobile Optimized
   return (
-    <div className="bg-white rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
+    <div className="bg-white rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 card-hover" style={{ willChange: 'transform' }}>
       <div className="bg-gradient-to-br from-primary-100 to-secondary-100 rounded-t-lg sm:rounded-t-xl overflow-hidden relative" style={{ aspectRatio: '4/5' }}>
         {product.stockType && (
           <div className="absolute top-2 right-2 z-10">
@@ -103,6 +105,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
             src={product.card_image || product.image} 
             alt={product.name}
             className="w-full h-full object-cover"
+            loading="lazy"
             onError={(e) => {
               e.target.onerror = null;
               e.target.src = '/uploads/placeholder.jpg';
@@ -163,4 +166,10 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
   );
 };
 
-export default ProductCard;
+// Memoize component to prevent unnecessary re-renders
+export default memo(ProductCard, (prevProps, nextProps) => {
+  return (
+    prevProps.product.slug === nextProps.product.slug &&
+    prevProps.viewMode === nextProps.viewMode
+  );
+});
