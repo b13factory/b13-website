@@ -1,5 +1,7 @@
 import Layout from '@/components/layout/Layout';
 import { SiteConfigProvider } from '@/contexts/SiteConfigContext';
+import { HomeContextProvider } from '@/contexts/HomeContext';
+import { ProductsContextProvider } from '@/contexts/ProductsContext';
 import '@/styles/globals.css';
 import Head from 'next/head';
 import { useSiteConfig } from '@/contexts/SiteConfigContext';
@@ -31,7 +33,11 @@ function AppContent({ Component, pageProps }) {
 export default function App({ Component, pageProps }) {
   return (
     <SiteConfigProvider>
-      <AppContent Component={Component} pageProps={pageProps} />
+      <HomeContextProvider>
+        <ProductsContextProvider>
+          <AppContent Component={Component} pageProps={pageProps} />
+        </ProductsContextProvider>
+      </HomeContextProvider>
     </SiteConfigProvider>
   );
 }
