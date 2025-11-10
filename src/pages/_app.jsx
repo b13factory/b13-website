@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { useSiteConfig } from '@/contexts/SiteConfigContext';
 import { Suspense } from 'react';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import { reportWebVitals, measureTTI } from '@/utils/performance';
+import { reportWebVitals as reportPerformance, measureTTI } from '@/utils/performance';
 import { useEffect } from 'react';
 
 // Dynamic imports for better code splitting
@@ -41,16 +41,6 @@ function AppContent({ Component, pageProps }) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       measureTTI();
-      
-      // Report Web Vitals when available
-      if ('web-vitals' in window) {
-        const { getCLS, getFID, getFCP, getLCP, getTTFB } = window['web-vitals'];
-        getCLS?.(reportWebVitals);
-        getFID?.(reportWebVitals);
-        getFCP?.(reportWebVitals);
-        getLCP?.(reportWebVitals);
-        getTTFB?.(reportWebVitals);
-      }
     }
   }, []);
 
@@ -96,5 +86,7 @@ export default function App({ Component, pageProps }) {
   );
 }
 
-// Export reportWebVitals for Next.js
-export { reportWebVitals };
+// Next.js built-in Web Vitals reporting
+export function reportWebVitals(metric) {
+  reportPerformance(metric);
+}
