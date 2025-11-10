@@ -1,12 +1,12 @@
 // website/src/components/home/ProductCategories.jsx
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 import Button from '@/components/ui/Button';
 import { Check } from 'lucide-react';
 import { useHomeData } from '@/contexts/HomeContext';
 import { parseDescription } from '@/utils/markdown';
 import { getColorByIndex, getGradientColorClasses } from '@/utils/colors';
 
-export default function ProductCategories() {
+const ProductCategories = memo(function ProductCategories() {
   const { homeData, isLoading } = useHomeData();
 
   // Transform homeData menjadi servicesData dengan memoization
@@ -98,7 +98,7 @@ export default function ProductCategories() {
             return (
               <div 
                 key={index}
-                className="group relative bg-neutral-800 rounded-xl sm:rounded-2xl p-5 sm:p-6 lg:p-8 hover:bg-neutral-700 transition-all duration-500 hover:transform hover:-translate-y-2"
+                className="group relative bg-neutral-800 rounded-xl sm:rounded-2xl p-5 sm:p-6 lg:p-8 hover:bg-neutral-700 transition-all duration-500 card-hover"
               >
                 {/* Gradient Accent - Mobile Optimized */}
                 <div className={`absolute top-0 left-4 sm:left-6 lg:left-8 w-12 sm:w-14 lg:w-16 h-1 bg-gradient-to-r ${getGradientColorClasses(service.color)} rounded-full`} />
@@ -155,4 +155,8 @@ export default function ProductCategories() {
       </div>
     </section>
   );
-}
+});
+
+ProductCategories.displayName = 'ProductCategories';
+
+export default ProductCategories;

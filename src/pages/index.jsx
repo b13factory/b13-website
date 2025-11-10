@@ -1,9 +1,35 @@
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import HeroBanner from '@/components/home/HeroBanner';
 import FeaturedProducts from '@/components/home/FeaturedProducts';
-import ProductCategories from '@/components/home/ProductCategories';
-import PortfolioShowcase from '@/components/home/PortfolioShowcase';
-import ContactSection from '@/components/home/ContactSection';
+
+// Dynamic imports untuk below-the-fold components dengan loading states
+const ProductCategories = dynamic(() => import('@/components/home/ProductCategories'), {
+  loading: () => (
+    <div className="min-h-screen flex items-center justify-center bg-neutral-900">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+    </div>
+  ),
+  ssr: true,
+});
+
+const PortfolioShowcase = dynamic(() => import('@/components/home/PortfolioShowcase'), {
+  loading: () => (
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+    </div>
+  ),
+  ssr: true,
+});
+
+const ContactSection = dynamic(() => import('@/components/home/ContactSection'), {
+  loading: () => (
+    <div className="py-20 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+    </div>
+  ),
+  ssr: true,
+});
 
 export default function Home({ siteData }) {
 
@@ -36,6 +62,10 @@ export default function Home({ siteData }) {
         <meta name="robots" content="index, follow" />
         <meta name="theme-color" content="#0066B3" />
         
+        {/* Preconnect untuk performance */}
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        
         {/* Structured Data */}
         <script
           type="application/ld+json"
@@ -64,8 +94,11 @@ export default function Home({ siteData }) {
       </Head>
 
       <main className="overflow-hidden">
+        {/* Above the fold - No lazy loading */}
         <HeroBanner />
         <FeaturedProducts />
+        
+        {/* Below the fold - Lazy loaded */}
         <ProductCategories />
         <PortfolioShowcase />
         <ContactSection />
