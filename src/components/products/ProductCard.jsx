@@ -1,8 +1,31 @@
 import { memo } from 'react';
+import Image from 'next/image';
 import { Download } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
+// Blur placeholder for better loading UX
+const shimmer = (w, h) => `
+<svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="g">
+      <stop stop-color="#f3f4f6" offset="20%" />
+      <stop stop-color="#e5e7eb" offset="50%" />
+      <stop stop-color="#f3f4f6" offset="70%" />
+    </linearGradient>
+  </defs>
+  <rect width="${w}" height="${h}" fill="#f3f4f6" />
+  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
+</svg>`;
+
+const toBase64 = (str) =>
+  typeof window === 'undefined'
+    ? Buffer.from(str).toString('base64')
+    : window.btoa(str);
+
 const ProductCard = ({ product, viewMode = 'grid' }) => {
+  const imageUrl = product.card_image || product.image;
+  
   if (viewMode === 'list') {
     return (
       <div className="bg-white rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-3 sm:p-4 md:p-6">
@@ -19,16 +42,17 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
                 </span>
               </div>
             )}
-            {product.card_image || product.image ? (
-              <img 
-                src={product.card_image || product.image} 
+            {imageUrl ? (
+              <Image
+                src={imageUrl}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
                 loading="lazy"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = '/uploads/placeholder.jpg';
-                }}
+                quality={75}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 48vw, 224px"
+                placeholder="blur"
+                blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(224, 280))}`}
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-center text-neutral-600 px-2">
@@ -85,7 +109,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
     );
   }
 
-  // Grid View - Mobile Optimized
+  // Grid View - Optimized with next/image
   return (
     <div className="bg-white rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 card-hover" style={{ willChange: 'transform' }}>
       <div className="bg-gradient-to-br from-primary-100 to-secondary-100 rounded-t-lg sm:rounded-t-xl overflow-hidden relative" style={{ aspectRatio: '4/5' }}>
@@ -100,16 +124,17 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
             </span>
           </div>
         )}
-        {product.card_image || product.image ? (
-          <img 
-            src={product.card_image || product.image} 
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
             alt={product.name}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
             loading="lazy"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = '/uploads/placeholder.jpg';
-            }}
+            quality={75}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            placeholder="blur"
+            blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(400, 500))}`}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-center text-neutral-600 px-2">
@@ -166,10 +191,12 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
   );
 };
 
-// Memoize component to prevent unnecessary re-renders
+// Optimized memo comparison - only re-render if essential props change
 export default memo(ProductCard, (prevProps, nextProps) => {
   return (
     prevProps.product.slug === nextProps.product.slug &&
-    prevProps.viewMode === nextProps.viewMode
+    prevProps.viewMode === nextProps.viewMode &&
+    prevProps.product.price === nextProps.product.price &&
+    prevProps.product.stockType === nextProps.product.stockType
   );
 });
