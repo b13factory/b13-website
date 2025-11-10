@@ -18,6 +18,12 @@ export default function Document() {
         <meta name="theme-color" content="#0066B3" />
         <meta name="msapplication-TileColor" content="#0066B3" />
         
+        {/* Mobile Web App - Updated meta tag */}
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="B13 Factory" />
+        
         {/* Optimized Font Loading - Defer non-critical fonts */}
         <link
           rel="preconnect"
@@ -77,11 +83,6 @@ export default function Document() {
 
         {/* Preconnect untuk CDN dan APIs */}
         <link rel="preconnect" href={process.env.NEXT_PUBLIC_SITE_URL} />
-        
-        {/* Additional Meta Tags */}
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="B13 Factory" />
         
         {/* Structured Data untuk Organization */}
         <script

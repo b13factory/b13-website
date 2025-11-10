@@ -1,4 +1,4 @@
-// Optimized Image component with better loading strategies
+// Optimized Image component with better loading strategies and error handling
 import { useState, useCallback, memo } from 'react';
 import Image from 'next/image';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
@@ -23,7 +23,7 @@ const toBase64 = (str) =>
     ? Buffer.from(str).toString('base64')
     : window.btoa(str);
 
-const OptimizedImage = memo(({
+const OptimizedImage = memo(function OptimizedImage({
   src,
   alt,
   width = 400,
@@ -37,8 +37,9 @@ const OptimizedImage = memo(({
   onError,
   loading = 'lazy',
   placeholder = 'blur',
+  objectFit = 'cover',
   ...props
-}) => {
+}) {
   const [imageState, setImageState] = useState('loading');
   const [ref, isIntersecting, hasIntersected] = useIntersectionObserver({
     threshold: 0.1,
@@ -63,15 +64,25 @@ const OptimizedImage = memo(({
       <div 
         ref={ref}
         className={`bg-gray-100 flex items-center justify-center ${className}`}
-        style={fill ? {} : { width, height }}
+        style={fill ? { position: 'absolute', inset: 0 } : { width, height }}
       >
         <span className="text-gray-400 text-sm">Image not available</span>
       </div>
     );
   }
 
+  // Wrapper for fill images to ensure proper parent positioning
+  const WrapperComponent = fill ? 'div' : 'div';
+  const wrapperStyle = fill 
+    ? { position: 'relative', width: '100%', height: '100%' } 
+    : { width, height, position: 'relative' };
+
   return (
-    <div ref={ref} className={className} style={fill ? {} : { width, height }}>
+    <WrapperComponent 
+      ref={ref} 
+      className={fill ? `relative w-full h-full ${className}` : className}
+      style={wrapperStyle}
+    >
       {shouldLoad && src && (
         <Image
           src={src}
@@ -84,13 +95,14 @@ const OptimizedImage = memo(({
           loading={priority ? undefined : loading}
           placeholder={placeholder}
           blurDataURL={`data:image/svg+xml;base64,${toBase64(createShimmer(width, height))}`}
-          sizes={sizes}
+          sizes={sizes || (fill ? '100vw' : `${width}px`)}
           onLoad={handleLoad}
           onError={handleError}
           className={`transition-opacity duration-300 ${
             imageState === 'loaded' ? 'opacity-100' : 'opacity-0'
-          } ${className}`}
+          }`}
           style={{
+            objectFit: objectFit,
             willChange: imageState === 'loading' ? 'opacity' : 'auto',
             ...props.style
           }}
@@ -101,11 +113,11 @@ const OptimizedImage = memo(({
       {/* Loading placeholder */}
       {imageState === 'loading' && shouldLoad && (
         <div 
-          className={`absolute inset-0 bg-gray-200 animate-pulse ${fill ? '' : 'rounded'}`}
+          className="absolute inset-0 bg-gray-200 animate-pulse"
           style={{ willChange: 'opacity' }}
         />
       )}
-    </div>
+    </WrapperComponent>
   );
 });
 

@@ -181,16 +181,18 @@ export default function HeroBanner() {
             style={{ willChange: index === safeCurrentSlide ? 'opacity' : 'auto' }}
           >
             {slide.image ? (
-              <OptimizedImage
-                src={slide.image}
-                alt={slide.title}
-                fill
-                className="object-cover"
-                priority={index === 0}
-                loading={index === 0 ? undefined : 'lazy'}
-                quality={85}
-                sizes="100vw"
-              />
+              <div className="relative w-full h-full">
+                <OptimizedImage
+                  src={slide.image}
+                  alt={slide.title}
+                  fill
+                  objectFit="cover"
+                  priority={index === 0}
+                  loading={index === 0 ? undefined : 'lazy'}
+                  quality={85}
+                  sizes="100vw"
+                />
+              </div>
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center">
                 <div className="text-center text-white">
