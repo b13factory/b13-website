@@ -52,14 +52,17 @@ export default function FeaturedProducts() {
     );
   }, []);
 
-  // Throttled touch handlers
+  // Optimized touch handlers with proper memoization
   const handleTouchStart = useCallback((e) => {
     setTouchStart(e.targetTouches[0].clientX);
   }, []);
 
-  const handleTouchMove = useCallback(throttle((e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  }, 50), []);
+  const handleTouchMove = useCallback(
+    throttle((e) => {
+      setTouchEnd(e.targetTouches[0].clientX);
+    }, 50), 
+    []
+  );
 
   const handleTouchEnd = useCallback(() => {
     if (!touchStart || !touchEnd) return;
@@ -67,21 +70,24 @@ export default function FeaturedProducts() {
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
+    const productsLength = carouselProducts.length;
 
-    if (isLeftSwipe && carouselProducts.length > 0) {
-      setCurrentIndex((prev) => (prev + 1) % carouselProducts.length);
+    if (isLeftSwipe && productsLength > 0) {
+      setCurrentIndex((prev) => (prev + 1) % productsLength);
     }
-    if (isRightSwipe && carouselProducts.length > 0) {
-      setCurrentIndex((prev) => (prev - 1 + carouselProducts.length) % carouselProducts.length);
+    if (isRightSwipe && productsLength > 0) {
+      setCurrentIndex((prev) => (prev - 1 + productsLength) % productsLength);
     }
 
     setTouchStart(0);
     setTouchEnd(0);
   }, [touchStart, touchEnd, carouselProducts.length]);
 
-  // Auto-play carousel with cleanup
+  // Optimized auto-play carousel with stable dependency
+  const carouselLength = carouselProducts.length;
+  
   useEffect(() => {
-    if (!carouselProducts || carouselProducts.length <= 1) {
+    if (!carouselProducts || carouselLength <= 1) {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
@@ -90,7 +96,7 @@ export default function FeaturedProducts() {
     }
 
     intervalRef.current = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % carouselProducts.length);
+      setCurrentIndex((prev) => (prev + 1) % carouselLength);
     }, 3500);
 
     return () => {
@@ -99,7 +105,7 @@ export default function FeaturedProducts() {
         intervalRef.current = null;
       }
     };
-  }, [carouselProducts.length]);
+  }, [carouselLength, carouselProducts]);
 
   // Navigation callbacks
   const nextSlide = useCallback(() => {
