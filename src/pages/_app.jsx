@@ -1,18 +1,11 @@
 import Layout from '@/components/layout/Layout';
+import { SiteConfigProvider } from '@/contexts/SiteConfigContext';
 import '@/styles/globals.css';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
 
-export default function App({ Component, pageProps }) {
-  const [siteConfig, setSiteConfig] = useState(null);
-
-  useEffect(() => {
-    fetch('/api/content/site-config')
-      .then(res => res.json())
-      .then(cfg => setSiteConfig(cfg))
-      .catch(err => console.log('Failed to load site config:', err));
-  }, []);
-
+function AppContent({ Component, pageProps }) {
+  const { siteConfig } = useSiteConfig();
   const getLayout = Component.getLayout || ((page) => <Layout>{page}</Layout>);
 
   return (
@@ -32,5 +25,13 @@ export default function App({ Component, pageProps }) {
       </Head>
       {getLayout(<Component {...pageProps} />)}
     </>
+  );
+}
+
+export default function App({ Component, pageProps }) {
+  return (
+    <SiteConfigProvider>
+      <AppContent Component={Component} pageProps={pageProps} />
+    </SiteConfigProvider>
   );
 }
