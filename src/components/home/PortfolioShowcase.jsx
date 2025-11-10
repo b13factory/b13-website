@@ -1,60 +1,35 @@
 // website/src/components/home/PortfolioShowcase.jsx
 'use client';
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
+import Image from 'next/image';
 import Button from '@/components/ui/Button';
 import { ChevronRight, Plus } from 'lucide-react';
-import { markdownToHtml } from '@/components/lib/clientMarkdown';
+import { usePortfolio } from '@/contexts/PortfolioContext';
+import { useHomeData } from '@/contexts/HomeContext';
+import { formatMarkdown } from '@/utils/markdown';
 
 export default function PortfolioShowcase() {
-  const [portfolioItems, setPortfolioItems] = useState([]);
-  const [portfolioStats, setPortfolioStats] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { portfolio: portfolioItems, isLoading: portfolioLoading } = usePortfolio();
+  const { homeData, isLoading: homeLoading } = useHomeData();
 
-  // Load portfolio stats dari API
-  useEffect(() => {
-    const loadStats = async () => {
-      try {
-        const res = await fetch('/api/content/home');
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && data.home?.portfolio_stats) {
-            setPortfolioStats(data.home.portfolio_stats);
-          }
-        }
-      } catch (error) {
-        console.error('Error loading stats:', error);
-        // Set default stats if fetch fails
-        setPortfolioStats({
-          projects_completed: '150+',
-          happy_clients: '50+',
-          years_experience: '5+'
-        });
-      }
-    };
-    
-    loadStats();
-  }, []);
+  const isLoading = portfolioLoading || homeLoading;
 
-  // Load portfolio dari API
-  useEffect(() => {
-    const loadPortfolio = async () => {
-      try {
-        const res = await fetch('/api/content/portfolio');
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && data.portfolio) {
-            setPortfolioItems(data.portfolio);
-          }
-        }
-      } catch (error) {
-        console.error('Error loading portfolio:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    loadPortfolio();
-  }, []);  
+  // Memoized portfolio stats
+  const portfolioStats = useMemo(() => {
+    if (!homeData?.portfolio_stats) {
+      return {
+        projects_completed: '150+',
+        happy_clients: '50+',
+        years_experience: '5+'
+      };
+    }
+    return homeData.portfolio_stats;
+  }, [homeData]);
+
+  // Memoized portfolio items (first 6)
+  const displayedPortfolio = useMemo(() => {
+    return portfolioItems.slice(0, 6);
+  }, [portfolioItems]);
 
   if (isLoading) {
     return (
@@ -69,8 +44,8 @@ export default function PortfolioShowcase() {
 
   return (
     <section className="min-h-screen flex items-center bg-white relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-50/20 to-secondary-50/20" />
+      {/* Background Pattern - GPU Accelerated */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-50/20 to-secondary-50/20" style={{ willChange: 'transform' }} />
       
       <div className="container-custom section-padding px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center mb-8 sm:mb-12 lg:mb-16">
@@ -97,8 +72,7 @@ export default function PortfolioShowcase() {
           </div>
 
           {/* Stats - Mobile Optimized */}
-          {portfolioStats && (
-            <div className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          <div className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             <div className="text-center">
               <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-primary-600 mb-1 sm:mb-2">{portfolioStats.projects_completed}</div>
               <div className="text-neutral-600 text-xs sm:text-sm leading-tight">Projects Completed</div>
@@ -112,11 +86,10 @@ export default function PortfolioShowcase() {
               <div className="text-neutral-600 text-xs sm:text-sm leading-tight">Years Experience</div>
             </div>
           </div>
-          )}
         </div>
 
         {/* Portfolio Grid - Mobile Optimized */}
-        {portfolioItems.length === 0 ? (
+        {displayedPortfolio.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-neutral-500 text-base sm:text-lg">Belum ada portfolio yang tersedia</p>
           </div>
@@ -124,21 +97,26 @@ export default function PortfolioShowcase() {
         <div className="mb-8 sm:mb-10 lg:mb-12">
           {/* Grid Layout - Responsive */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-            {portfolioItems.slice(0, 6).map((item, index) => (
+            {displayedPortfolio.map((item, index) => (
               <a
               key={item.slug || index}
               href={`/portofolio/${item.slug}`}
                 className="group block bg-white rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300"
             >
-              {/* Image Container - Aspect ratio 16:10 */}
+              {/* Image Container - Aspect ratio 16:10 - Optimized with Next Image */}
               <div className="aspect-[16/10] bg-gradient-to-br from-neutral-100 to-neutral-200 relative overflow-hidden">
                 {item.image ? (
-                    <img 
-                      src={item.image} 
-                      alt={item.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
+                  <Image 
+                    src={item.image} 
+                    alt={item.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    loading={index < 3 ? 'eager' : 'lazy'}
+                    priority={index < 3}
+                    quality={85}
+                  />
+                ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="text-center">
                     <div className="w-16 h-16 bg-neutral-300 rounded-full flex items-center justify-center mb-4 mx-auto">
@@ -176,7 +154,7 @@ export default function PortfolioShowcase() {
                   {/* Description */}
                   <div 
                     className="text-neutral-600 text-sm sm:text-base leading-relaxed mb-3 sm:mb-4 line-clamp-3 prose prose-base max-w-none prose-p:mb-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:space-y-1.5 prose-li:my-1.5 prose-li:leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: markdownToHtml(item.description || '') }}
+                    dangerouslySetInnerHTML={{ __html: formatMarkdown(item.description || '') }}
                   />
 
                   {/* Client Info */}

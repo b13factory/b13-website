@@ -1,64 +1,35 @@
 // website/src/components/home/ContactSection.jsx
 'use client';
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import Button from '@/components/ui/Button';
 import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react';
+import { useContact } from '@/contexts/ContactContext';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
 
 export default function ContactSection() {
-  const [contactData, setContactData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { contactData, isLoading: contactLoading } = useContact();
+  const { siteConfig, isLoading: siteLoading } = useSiteConfig();
 
-  // Load contact data from CMS
-  useEffect(() => {
-    const loadContactData = async () => {
-      try {
-        setIsLoading(true);
-        
-        // Fetch both site config and contact data for maps
-        const [siteRes, contactRes] = await Promise.all([
-          fetch('/api/content/site-config'),
-          fetch('/api/content/contact')
-        ]);
-        
-        let siteData = {};
-        let mapsEmbed = null;
-        
-        if (siteRes.ok) {
-          siteData = await siteRes.json();
-        }
-        
-        // Get maps embed from contact data if available
-        if (contactRes.ok) {
-          const contactResult = await contactRes.json();
-          if (contactResult.success && contactResult.contact?.contact_info?.address?.google_maps_embed) {
-            mapsEmbed = contactResult.contact.contact_info.address.google_maps_embed;
-          }
-        }
-        
-        setContactData({
-          ...siteData,
-          google_maps_embed: mapsEmbed
-        });
-        
-      } catch (error) {
-        console.error('Error loading contact data:', error);
-        // Fallback to default data
-        setContactData({
-          address: 'JL. Arowana, Perum Kebon Agung Indah, Kab. Jember, Jawa Timur, Indonesia',
-          contact_email: 'b13factory@gmail.com',
-          contact_phone: '+62 812-3456-7890',
-          business_hours: {
-            hours: 'Setiap Hari: 09.00 - 17.00 WIB'
-          },
-          google_maps_embed: null
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const isLoading = contactLoading || siteLoading;
+
+  // Memoized merged contact data
+  const mergedContactData = useMemo(() => {
+    if (!siteConfig && !contactData) return null;
     
-    loadContactData();
-  }, []);
+    return {
+      address: siteConfig?.address || contactData?.address || 'JL. Arowana, Perum Kebon Agung Indah, Kab. Jember, Jawa Timur, Indonesia',
+      contact_email: siteConfig?.contact_email || contactData?.contact_email || 'b13factory@gmail.com',
+      contact_phone: siteConfig?.contact_phone || contactData?.contact_phone || '+62 812-3456-7890',
+      business_hours: siteConfig?.business_hours || contactData?.business_hours || { hours: 'Setiap Hari: 09.00 - 17.00 WIB' },
+      google_maps_embed: contactData?.google_maps_embed || null
+    };
+  }, [siteConfig, contactData]);
+
+  // Memoized WhatsApp link
+  const whatsappLink = useMemo(() => {
+    const phoneNumber = mergedContactData?.contact_phone?.replace(/\D/g, '') || '6281234567890';
+    return `https://wa.me/${phoneNumber}`;
+  }, [mergedContactData?.contact_phone]);
 
   if (isLoading) {
     return (
@@ -71,15 +42,15 @@ export default function ContactSection() {
     );
   }
 
-  // Format WhatsApp number (remove spaces and special chars)
-  const whatsappNumber = contactData?.contact_phone?.replace(/\D/g, '') || '6281234567890';
-  const whatsappLink = `https://wa.me/${whatsappNumber}`;
+  if (!mergedContactData) {
+    return null;
+  }
 
   return (
     <section className="min-h-screen flex items-center bg-gradient-to-br from-neutral-900 to-neutral-800 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute top-0 right-0 w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96 bg-primary-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96 bg-secondary-500/10 rounded-full blur-3xl" />
+      {/* Background Elements - GPU Accelerated */}
+      <div className="absolute top-0 right-0 w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96 bg-primary-500/10 rounded-full blur-3xl" style={{ willChange: 'transform' }} />
+      <div className="absolute bottom-0 left-0 w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96 bg-secondary-500/10 rounded-full blur-3xl" style={{ willChange: 'transform' }} />
       
       <div className="container-custom section-padding px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
@@ -96,7 +67,7 @@ export default function ContactSection() {
             {/* Contact Details - Mobile Optimized */}
             <div className="space-y-5 sm:space-y-6 lg:space-y-8">
               {/* Address */}
-              {contactData?.address && (
+              {mergedContactData.address && (
                 <div className="flex items-start space-x-3 sm:space-x-4 lg:space-x-6 group">
                   <div className="flex-shrink-0">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-primary-500/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:bg-primary-500/30 transition-colors">
@@ -106,14 +77,14 @@ export default function ContactSection() {
                   <div>
                     <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-white mb-1 sm:mb-2">Our Location</h3>
                     <p className="text-neutral-300 text-sm sm:text-base lg:text-lg leading-relaxed">
-                      {contactData.address}
+                      {mergedContactData.address}
                     </p>
                   </div>
                 </div>
               )}
 
               {/* Email - Mobile Optimized */}
-              {contactData?.contact_email && (
+              {mergedContactData.contact_email && (
                 <div className="flex items-start space-x-3 sm:space-x-4 lg:space-x-6 group">
                   <div className="flex-shrink-0">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-secondary-500/20 rounded-lg sm:rounded-xl lg:rounded-2xl flex items-center justify-center group-hover:bg-secondary-500/30 transition-colors">
@@ -122,13 +93,13 @@ export default function ContactSection() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm sm:text-base lg:text-xl font-semibold text-white mb-1 sm:mb-2">Email Us</h3>
-                    <p className="text-neutral-300 text-xs sm:text-sm lg:text-lg break-all">{contactData.contact_email}</p>
+                    <p className="text-neutral-300 text-xs sm:text-sm lg:text-lg break-all">{mergedContactData.contact_email}</p>
                   </div>
                 </div>
               )}
 
               {/* Business Hours - Mobile Optimized */}
-              {contactData?.business_hours && (
+              {mergedContactData.business_hours && (
                 <div className="flex items-start space-x-3 sm:space-x-4 lg:space-x-6 group">
                   <div className="flex-shrink-0">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-accent-500/20 rounded-lg sm:rounded-xl lg:rounded-2xl flex items-center justify-center group-hover:bg-accent-500/30 transition-colors">
@@ -138,24 +109,24 @@ export default function ContactSection() {
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm sm:text-base lg:text-xl font-semibold text-white mb-1 sm:mb-2">Business Hours</h3>
                     <p className="text-neutral-300 text-xs sm:text-sm lg:text-lg leading-relaxed">
-                      {contactData.business_hours.hours || contactData.business_hours}
+                      {mergedContactData.business_hours.hours || mergedContactData.business_hours}
                     </p>
                   </div>
                 </div>
               )}
 
               {/* Quick Contact - Mobile Optimized */}
-              {contactData?.contact_phone && (
+              {mergedContactData.contact_phone && (
                 <div className="flex items-start space-x-3 sm:space-x-4 lg:space-x-6 group">
                   <div className="flex-shrink-0">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-primary-500/20 rounded-lg sm:rounded-xl lg:rounded-2xl flex items-center justify-center group-hover:bg-primary-500/30 transition-colors">
-                      <MessageCircle size={18} className="text-primary-400 sm:w-6 sm:h-6 lg:w-8 lg:h-8\" />
+                      <MessageCircle size={18} className="text-primary-400 sm:w-6 sm:h-6 lg:w-8 lg:h-8" />
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm sm:text-base lg:text-xl font-semibold text-white mb-1 sm:mb-2">Quick Response</h3>
                     <p className="text-neutral-300 text-xs sm:text-sm lg:text-lg">
-                      WhatsApp: {contactData.contact_phone}
+                      WhatsApp: {mergedContactData.contact_phone}
                     </p>
                   </div>
                 </div>
@@ -185,10 +156,10 @@ export default function ContactSection() {
           <div className="space-y-4 sm:space-y-6 lg:space-y-8">
             {/* Google Maps Embed - Mobile Optimized */}
             <div className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-xl sm:shadow-2xl">
-              {contactData?.google_maps_embed ? (
+              {mergedContactData.google_maps_embed ? (
                 <div 
                   dangerouslySetInnerHTML={{ 
-                    __html: contactData.google_maps_embed.replace(
+                    __html: mergedContactData.google_maps_embed.replace(
                       /width="[^\"]*"/g, 
                       'width="100%"'
                     ).replace(
@@ -255,7 +226,7 @@ export default function ContactSection() {
                 </a>
 
                 <a
-                  href={`mailto:${contactData?.contact_email || 'b13factory@gmail.com'}`}
+                  href={`mailto:${mergedContactData.contact_email}`}
                   className="flex items-center justify-between p-4 bg-neutral-50 rounded-xl hover:bg-primary-50 transition-colors cursor-pointer group"
                 >
                   <div className="flex items-center space-x-3">
