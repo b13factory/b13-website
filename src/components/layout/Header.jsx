@@ -1,12 +1,11 @@
 // website/src/components/layout/Header.jsx
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import { useSiteConfig } from '@/contexts/SiteConfigContext';
-import { throttle } from '@/utils/animations';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,6 +13,9 @@ export default function Header() {
   const { siteConfig } = useSiteConfig();
   const router = useRouter();
   const isHomePage = router.pathname === '/';
+  
+  // Use ref to track throttle timeout for proper cleanup
+  const throttleTimeoutRef = useRef(null);
 
   // Check if current page is a product detail page (dynamic route)
   const isProductDetailPage = router.pathname.startsWith('/produk/') && router.pathname !== '/produk';
@@ -21,15 +23,29 @@ export default function Header() {
   const isArtikelDetailPage = router.pathname.startsWith('/artikel/') && router.pathname !== '/artikel';
   const isDetailPage = isProductDetailPage || isPortfolioDetailPage || isArtikelDetailPage;
 
-  useEffect(() => {
-    // Throttled scroll handler untuk performance
-    const handleScroll = throttle(() => {
-      setIsScrolled(window.scrollY > 10);
+  // Memoized scroll handler with proper throttle implementation
+  const handleScroll = useCallback(() => {
+    if (throttleTimeoutRef.current) return;
+    
+    setIsScrolled(window.scrollY > 10);
+    
+    throttleTimeoutRef.current = setTimeout(() => {
+      throttleTimeoutRef.current = null;
     }, 100);
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    // Add scroll event listener with passive flag for better performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      // Cleanup throttle timeout on unmount
+      if (throttleTimeoutRef.current) {
+        clearTimeout(throttleTimeoutRef.current);
+      }
+    };
+  }, [handleScroll]);
 
   // Default navigation jika CMS belum load
   const defaultNavigation = [
