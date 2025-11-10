@@ -115,6 +115,7 @@ export default function Header() {
                   fill
                   className="object-contain"
                   priority
+                  sizes="(max-width: 640px) 32px, 36px"
                 />
               </div>
             ) : (

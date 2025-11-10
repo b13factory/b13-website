@@ -89,6 +89,7 @@
 
   .card-hover {
     @apply transition-all duration-500 hover:transform hover:-translate-y-2 hover:shadow-xl;
+    will-change: transform;
   }
 
   .line-clamp-2 {
@@ -120,29 +121,30 @@
   }
 
   
-  /* Product Card Animations */
+  /* Product Card Animations - GPU Accelerated */
   @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translate3d(0, 30px, 0);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translate3d(0, 0, 0);
     }
   }
 
   @keyframes shimmer {
     0% {
-      background-position: -1000px 0;
+      transform: translate3d(-1000px, 0, 0);
     }
     100% {
-      background-position: 1000px 0;
+      transform: translate3d(1000px, 0, 0);
     }
   }
 
   .animate-fade-in-up {
     animation: fadeInUp 0.6s ease-out forwards;
+    will-change: transform, opacity;
   }
 
   .shadow-3xl {

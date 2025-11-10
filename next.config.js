@@ -28,7 +28,7 @@ const nextConfig = {
             test: /[\/]node_modules[\/](react|react-dom)[\/]/,
             priority: 40,
           },
-          // Vendor chunk untuk lucide-react icons
+          // Vendor chunk untuk lucide-react icons dengan better tree-shaking
           icons: {
             name: 'icons-vendor',
             test: /[\/]node_modules[\/]lucide-react[\/]/,
@@ -43,6 +43,10 @@ const nextConfig = {
           },
         },
       };
+      
+      // Enable tree shaking untuk lucide-react
+      config.optimization.usedExports = true;
+      config.optimization.sideEffects = false;
     }
     return config;
   },
