@@ -159,13 +159,13 @@ export default function FeaturedProducts() {
                 <Link href={`/produk/${featuredProduct.slug}`} className="block lg:float-left lg:w-[66%] lg:pr-4 mb-4 lg:mb-0 group">
                   <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2 h-[350px] sm:h-[400px] lg:h-[500px]" style={{ contain: 'layout paint', willChange: 'transform' }}>
                     {/* Image Background */}
-                    <div className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden" style={{ contain: 'paint' }}>
+                    <div className="absolute inset-0 overflow-hidden" style={{ contain: 'paint' }}>
                       {featuredProduct.image ? (
                         <OptimizedImage
                           src={featuredProduct.image}
                           alt={featuredProduct.name}
                           fill
-                          className="object-cover bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                          className="object-cover bg-neutral-100 transform group-hover:scale-[1.03] transition-transform duration-700"
                           priority
                           quality={85}
                           sizes="(max-width: 1024px) 100vw, 66vw"
@@ -205,14 +205,14 @@ export default function FeaturedProducts() {
               {secondProduct && (
                 <Link href={`/produk/${secondProduct.slug}`} className="hidden lg:block lg:float-left lg:w-[34%] lg:pl-4 group">
                   <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                    <div className="absolute inset-0 rounded-3xl overflow-hidden">
+                    <div className="absolute inset-0 overflow-hidden">
                       <div className="absolute inset-0">
                         {secondProduct.image ? (
                           <OptimizedImage
                             src={secondProduct.image}
                             alt={secondProduct.name}
                             fill
-                            className="object-cover bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                            className="object-cover bg-neutral-100 transform group-hover:scale-[1.03] transition-transform duration-700"
                             loading="lazy"
                             quality={80}
                             sizes="34vw"
@@ -267,14 +267,14 @@ export default function FeaturedProducts() {
                         className="flex-shrink-0 w-[70%] sm:w-[45%] md:w-[30%] lg:w-[23%] group"
                       >
                         <div className="relative h-[280px] sm:h-[350px] lg:h-[400px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3" style={{ willChange: 'transform' }}>
-                          <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                          <div className="absolute inset-0 overflow-hidden">
                             <div className="absolute inset-0">
                               {product.image ? (
                                 <OptimizedImage
                                   src={product.image}
                                   alt={product.name}
                                   fill
-                                  className="object-cover bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                                  className="object-cover bg-neutral-100 transform group-hover:scale-[1.03] transition-transform duration-700"
                                   loading="lazy"
                                   quality={75}
                                   sizes="(max-width: 640px) 70vw, (max-width: 768px) 45vw, (max-width: 1024px) 30vw, 23vw"

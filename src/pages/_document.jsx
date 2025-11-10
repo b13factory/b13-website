@@ -78,10 +78,11 @@ export default function Document() {
         {/* DNS Prefetch untuk external domains */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        <link rel="dns-prefetch" href="//maps.googleapis.com" />
-        <link rel="dns-prefetch" href="//maps.gstatic.com" />
+        <link rel="dns-prefetch" href="//images.unsplash.com" />
+        <link rel="dns-prefetch" href="//via.placeholder.com" />
 
-        {/* Preconnect untuk CDN dan APIs */}
+        {/* Preconnect untuk critical external resources - with crossOrigin */}
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="preconnect" href={process.env.NEXT_PUBLIC_SITE_URL} />
         
         {/* Structured Data untuk Organization */}

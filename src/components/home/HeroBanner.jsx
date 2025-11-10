@@ -259,7 +259,7 @@ export default function HeroBanner() {
                   animationDuration: `${getAnimationDuration(marqueeData.speed)}ms`
                 }}
               >
-                <span className={`${getMarqueeTextColor(marqueeData.text_color)} font-semibold text-base sm:text-lg whitespace-nowrap px-4 py-2 rounded-lg bg-primary-600/90`}>
+                <span className={`${getMarqueeTextColor(marqueeData.text_color)} font-semibold text-base sm:text-lg whitespace-nowrap px-4 py-2`} style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
                   {currentMarqueeText}
                 </span>
               </div>
