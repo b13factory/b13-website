@@ -21,13 +21,13 @@ export function measureRender(componentName, callback) {
  * @param {Object} metric - Web Vital metric
  */
 export function reportWebVitals(metric) {
-  if (process.env.NODE_ENV === 'production') {
-    // You can send metrics to analytics service here
-    // Example: analytics.track('Web Vitals', metric)
-    
-    // For now, log to console in development
-    console.log(metric);
+  // Only log in development mode
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[Web Vitals] ${metric.name}:`, metric.value);
   }
+  
+  // In production, you can send metrics to analytics service here
+  // Example: analytics.track('Web Vitals', metric)
 }
 
 /**
@@ -41,13 +41,19 @@ export function measureTTI() {
       const observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           if (entry.entryType === 'largest-contentful-paint') {
-            console.log('[Performance] LCP:', entry.startTime);
+            // Only log in development
+            if (process.env.NODE_ENV === 'development') {
+              console.log('[Performance] LCP:', Math.round(entry.startTime), 'ms');
+            }
           }
         }
       });
       observer.observe({ entryTypes: ['largest-contentful-paint'] });
     } catch (e) {
-      console.error('Performance observer error:', e);
+      // Silently fail - performance monitoring is not critical
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Performance observer error:', e);
+      }
     }
   }
 }
@@ -117,7 +123,7 @@ export function lazyLoadImages(selector = 'img[data-src]') {
  * Get bundle size estimate
  */
 export function logBundleSize() {
-  if (typeof window !== 'undefined' && 'performance' in window) {
+  if (typeof window !== 'undefined' && 'performance' in window && process.env.NODE_ENV === 'development') {
     const resources = performance.getEntriesByType('resource');
     const jsResources = resources.filter(r => r.name.endsWith('.js'));
     const totalSize = jsResources.reduce((sum, r) => sum + (r.transferSize || 0), 0);
