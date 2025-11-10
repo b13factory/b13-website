@@ -5,6 +5,8 @@ import Head from 'next/head';
 import { useSiteConfig } from '@/contexts/SiteConfigContext';
 import { Suspense } from 'react';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import { reportWebVitals, measureTTI } from '@/utils/performance';
+import { useEffect } from 'react';
 
 // Dynamic imports for better code splitting
 const Layout = dynamic(() => import('@/components/layout/Layout'), {
@@ -34,6 +36,23 @@ const ContactContextProvider = dynamic(() =>
 function AppContent({ Component, pageProps }) {
   const { siteConfig } = useSiteConfig();
   const getLayout = Component.getLayout || ((page) => <Layout>{page}</Layout>);
+
+  // Measure performance metrics on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      measureTTI();
+      
+      // Report Web Vitals when available
+      if ('web-vitals' in window) {
+        const { getCLS, getFID, getFCP, getLCP, getTTFB } = window['web-vitals'];
+        getCLS?.(reportWebVitals);
+        getFID?.(reportWebVitals);
+        getFCP?.(reportWebVitals);
+        getLCP?.(reportWebVitals);
+        getTTFB?.(reportWebVitals);
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -76,3 +95,6 @@ export default function App({ Component, pageProps }) {
     </ErrorBoundary>
   );
 }
+
+// Export reportWebVitals for Next.js
+export { reportWebVitals };
