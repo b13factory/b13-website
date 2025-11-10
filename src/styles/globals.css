@@ -18,6 +18,29 @@
     width: 6px;
   }
   
+  /* Marquee Animation - Optimized with GPU acceleration */
+  @keyframes marquee-single {
+    0% {
+      transform: translate3d(-100%, 0, 0);
+      opacity: 0;
+    }
+    5% {
+      opacity: 1;
+    }
+    95% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(100%, 0, 0);
+      opacity: 0;
+    }
+  }
+
+  .animate-marquee-single {
+    animation: marquee-single linear infinite;
+    will-change: transform, opacity;
+  }
+  
   ::-webkit-scrollbar-track {
     @apply bg-neutral-100;
   }

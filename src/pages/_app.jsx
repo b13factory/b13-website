@@ -2,6 +2,8 @@ import Layout from '@/components/layout/Layout';
 import { SiteConfigProvider } from '@/contexts/SiteConfigContext';
 import { HomeContextProvider } from '@/contexts/HomeContext';
 import { ProductsContextProvider } from '@/contexts/ProductsContext';
+import { PortfolioContextProvider } from '@/contexts/PortfolioContext';
+import { ContactContextProvider } from '@/contexts/ContactContext';
 import '@/styles/globals.css';
 import Head from 'next/head';
 import { useSiteConfig } from '@/contexts/SiteConfigContext';
@@ -35,7 +37,11 @@ export default function App({ Component, pageProps }) {
     <SiteConfigProvider>
       <HomeContextProvider>
         <ProductsContextProvider>
-          <AppContent Component={Component} pageProps={pageProps} />
+          <PortfolioContextProvider>
+            <ContactContextProvider>
+              <AppContent Component={Component} pageProps={pageProps} />
+            </ContactContextProvider>
+          </PortfolioContextProvider>
         </ProductsContextProvider>
       </HomeContextProvider>
     </SiteConfigProvider>
