@@ -27,7 +27,6 @@ export function ProductsContextProvider({ children }) {
         }
       } catch (err) {
         if (isMounted) {
-          console.error('Error loading products:', err);
           setError(err.message);
           setProducts([]);
         }

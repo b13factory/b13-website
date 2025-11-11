@@ -27,7 +27,6 @@ export function HomeContextProvider({ children }) {
         }
       } catch (err) {
         if (isMounted) {
-          console.error('Error loading home content:', err);
           setError(err.message);
           // Set default fallback data
           setHomeData({

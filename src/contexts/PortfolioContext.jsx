@@ -27,7 +27,6 @@ export function PortfolioContextProvider({ children }) {
         }
       } catch (err) {
         if (isMounted) {
-          console.error('Error loading portfolio:', err);
           setError(err.message);
           setPortfolio([]);
         }

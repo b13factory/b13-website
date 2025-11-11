@@ -23,7 +23,6 @@ export function SiteConfigProvider({ children }) {
         }
       } catch (err) {
         if (isMounted) {
-          console.error('Error loading site config:', err);
           setError(err.message);
           // Set default fallback config
           setSiteConfig({

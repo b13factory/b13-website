@@ -9,7 +9,6 @@ export default function Admin() {
 
     useEffect(() => {
     // Initialize CMS after mount
-    console.log('Admin page mounted');
   }, []);
 
   return (
@@ -127,12 +126,10 @@ export default function Admin() {
         src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"
         strategy="afterInteractive"
         onLoad={() => {
-          console.log('Netlify CMS loaded successfully');
 
           // Register custom preview styles
           if (window.CMS) {
             window.CMS.registerPreviewStyle("/admin-preview.css");
-            console.log('CMS preview styles registered');
           }
         }}
         onError={(e) => {

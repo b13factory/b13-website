@@ -120,6 +120,23 @@ export default function Document() {
       <body className="bg-white text-neutral-900 antialiased">
         <Main />
         <NextScript />
+
+        {/* Suppress React DevTools warning in development */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+                const originalConsoleLog = console.log;
+                console.log = function(...args) {
+                  if (args[0] && typeof args[0] === 'string' && args[0].includes('Download the React DevTools')) {
+                    return;
+                  }
+                  originalConsoleLog.apply(console, args);
+                };
+              }
+            `,
+          }}
+        />
         
         {/* Noscript fallback - Improved for SEO */}
         <noscript>
