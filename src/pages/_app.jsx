@@ -4,9 +4,6 @@ import '@/styles/globals.css';
 import Head from 'next/head';
 import { useSiteConfig } from '@/contexts/SiteConfigContext';
 import { Suspense } from 'react';
-import ErrorBoundary from '@/components/ErrorBoundary';
-import { reportWebVitals as reportPerformance, measureTTI } from '@/utils/performance';
-import { useEffect } from 'react';
 
 // Dynamic imports for better code splitting
 const Layout = dynamic(() => import('@/components/layout/Layout'), {
@@ -37,13 +34,6 @@ function AppContent({ Component, pageProps }) {
   const { siteConfig } = useSiteConfig();
   const getLayout = Component.getLayout || ((page) => <Layout>{page}</Layout>);
 
-  // Measure performance metrics on mount
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      measureTTI();
-    }
-  }, []);
-
   return (
     <>
       <Head>
@@ -66,8 +56,7 @@ function AppContent({ Component, pageProps }) {
 
 export default function App({ Component, pageProps }) {
   return (
-    <ErrorBoundary>
-     <SiteConfigProvider>
+    <SiteConfigProvider>
       <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>}>
@@ -81,12 +70,6 @@ export default function App({ Component, pageProps }) {
           </ProductsContextProvider>
         </HomeContextProvider>
       </Suspense>
-     </SiteConfigProvider>
-    </ErrorBoundary>
+    </SiteConfigProvider>
   );
-}
-
-// Next.js built-in Web Vitals reporting
-export function reportWebVitals(metric) {
-  reportPerformance(metric);
 }

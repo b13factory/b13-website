@@ -1,44 +1,31 @@
-import { memo } from 'react';
+// website/src/components/ui/Button.jsx
 import Link from 'next/link';
 
-const Button = memo(function Button({ 
+export default function Button({ 
   children, 
+  variant = 'primary',
+  size = 'md',
   href, 
-  variant = 'primary', 
-  className = '', 
-  onClick,
-  type = 'button',
-  disabled = false,
+  className = '',
   ...props 
 }) {
-  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-4 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200';
   
   const variants = {
-    primary: 'bg-primary-500 hover:bg-primary-600 text-white focus:ring-primary-500/20 transform hover:-translate-y-0.5',
-    secondary: 'bg-secondary-500 hover:bg-secondary-600 text-white focus:ring-secondary-500/20 transform hover:-translate-y-0.5',
-    outline: 'border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white focus:ring-primary-500/20 transform hover:-translate-y-0.5',
-    ghost: 'text-primary-500 hover:bg-primary-50 focus:ring-primary-500/20',
+    primary: 'bg-primary-500 hover:bg-primary-600 text-white',
+    secondary: 'bg-secondary-500 hover:bg-secondary-600 text-white',
+    outline: 'border border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white',
   };
 
-  const classes = `${baseStyles} ${variants[variant]} ${className}`;
+  const sizes = {
+    sm: 'py-1.5 px-3 text-sm',
+    md: 'py-2 sm:py-3 px-4 sm:px-6',
+    lg: 'py-3 sm:py-4 px-6 sm:px-8 text-base sm:text-lg',
+  };
+
+  const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`;
 
   if (href) {
-    // External link
-    if (href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) {
-      return (
-        <a
-          href={href}
-          className={classes}
-          target={href.startsWith('http') ? '_blank' : undefined}
-          rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-          {...props}
-        >
-          {children}
-        </a>
-      );
-    }
-    
-    // Internal link
     return (
       <Link href={href} className={classes} {...props}>
         {children}
@@ -46,20 +33,9 @@ const Button = memo(function Button({
     );
   }
 
-  // Button element
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={classes}
-      {...props}
-    >
+    <button className={classes} {...props}>
       {children}
     </button>
   );
-});
-
-Button.displayName = 'Button';
-
-export default Button;
+}

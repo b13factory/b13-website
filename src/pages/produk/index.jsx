@@ -6,7 +6,6 @@ import ProductCard from '@/components/products/ProductCard';
 import ProductBanner from '@/components/products/ProductBanner';
 import Pagination from '@/components/ui/Pagination';
 import { sortOptions } from '@/data/products';
-import { getAllProductsData, getAllProductCategories } from '../../../lib/markdown';
 
 // Helper functions for data transformation
 const parsePrice = (priceString) => {

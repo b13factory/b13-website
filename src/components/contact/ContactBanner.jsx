@@ -66,11 +66,6 @@ export default function ContactBanner({ banner }) {
   }
 
   const textPos = banner.banner_text_position || {};
-  
-  // Default fallback image jika contact-banner.jpg tidak ada
-  const bannerImage = banner.banner_image && banner.banner_image !== '/uploads/contact-banner.jpg' 
-    ? banner.banner_image 
-    : '/uploads/hero_home1.jpeg';
 
   return (
     <section className="relative h-[400px] overflow-hidden">
@@ -78,7 +73,7 @@ export default function ContactBanner({ banner }) {
       <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{ 
-          backgroundImage: `url(${bannerImage})`,
+          backgroundImage: `url(${banner.banner_image || '/uploads/placeholder.jpg'})`,
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/60 to-slate-900/40" />

@@ -1,6 +1,6 @@
 // website/src/components/home/PortfolioShowcase.jsx
 'use client';
-import { useMemo, memo } from 'react';
+import { useMemo } from 'react';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import Button from '@/components/ui/Button';
 import { ChevronRight, Plus } from 'lucide-react';
@@ -8,7 +8,7 @@ import { usePortfolio } from '@/contexts/PortfolioContext';
 import { useHomeData } from '@/contexts/HomeContext';
 import { formatMarkdown } from '@/utils/markdown';
 
-const PortfolioShowcase = memo(function PortfolioShowcase() {
+export default function PortfolioShowcase() {
   const { portfolio: portfolioItems, isLoading: portfolioLoading } = usePortfolio();
   const { homeData, isLoading: homeLoading } = useHomeData();
 
@@ -101,7 +101,7 @@ const PortfolioShowcase = memo(function PortfolioShowcase() {
               <a
               key={item.slug || index}
               href={`/portofolio/${item.slug}`}
-                className="group block bg-white rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 card-hover"
+                className="group block bg-white rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300"
             >
               {/* Image Container - Aspect ratio 16:10 - Optimized with Next Image */}
               <div className="aspect-[16/10] bg-gradient-to-br from-neutral-100 to-neutral-200 relative overflow-hidden">
@@ -193,8 +193,4 @@ const PortfolioShowcase = memo(function PortfolioShowcase() {
       </div>
     </section>
   );
-});
-
-PortfolioShowcase.displayName = 'PortfolioShowcase';
-
-export default PortfolioShowcase;
+}
