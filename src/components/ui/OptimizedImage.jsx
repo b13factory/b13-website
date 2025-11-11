@@ -38,6 +38,7 @@ const OptimizedImage = memo(function OptimizedImage({
   loading = 'lazy',
   placeholder = 'empty',
   objectFit = 'cover',
+  objectPosition = 'center',
   ...props
 }) {
   const [imageState, setImageState] = useState('loading');
@@ -103,6 +104,7 @@ const OptimizedImage = memo(function OptimizedImage({
           }`}
           style={{
             objectFit: objectFit,
+            objectPosition: objectPosition,
             willChange: imageState === 'loading' ? 'opacity' : 'auto',
             ...props.style
           }}

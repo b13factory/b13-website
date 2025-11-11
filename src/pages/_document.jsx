@@ -1,14 +1,23 @@
 import { Html, Head, Main, NextScript } from 'next/document';
+import siteConfig from '../../site-config.json';
 
 export default function Document() {
+  // Get logo from site config with fallback
+  const logoPath = siteConfig?.logo || '/uploads/logo_128.png';
+  const faviconPath = siteConfig?.favicon || logoPath;
+  
   return (
     <Html lang="id">
       <Head>
         {/* Favicon - Multiple formats untuk kompatibilitas semua browser */}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo_128.png" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/uploads/logo_128.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href={faviconPath} />
+        <link rel="icon" type="image/png" sizes="16x16" href={faviconPath} />
+        <link rel="shortcut icon\" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href={logoPath} />
+        <link rel="apple-touch-icon" sizes="152x152" href={logoPath} />
+        <link rel="apple-touch-icon" sizes="120x120" href={logoPath} />
+        <link rel="apple-touch-icon" sizes="76x76" href={logoPath} />
         
         {/* PWA Manifest */}
         <link rel="manifest" href="/site.webmanifest" />
@@ -85,7 +94,7 @@ export default function Document() {
               "name": "B13 Factory",
               "alternateName": "B13 Factory Garment & Advertising",
               "url": process.env.NEXT_PUBLIC_SITE_URL,
-              "logo": `${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`,
+              "logo": `${process.env.NEXT_PUBLIC_SITE_URL}${logoPath}`,
               "description": "Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.",
               "address": {
                 "@type": "PostalAddress",
