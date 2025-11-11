@@ -165,7 +165,7 @@ export default function FeaturedProducts() {
                           src={featuredProduct.image}
                           alt={featuredProduct.name}
                           fill
-                          className="object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                          className="object-cover bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
                           priority
                           quality={85}
                           sizes="(max-width: 1024px) 100vw, 66vw"
@@ -212,7 +212,7 @@ export default function FeaturedProducts() {
                             src={secondProduct.image}
                             alt={secondProduct.name}
                             fill
-                            className="object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                            className="object-cover bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
                             loading="lazy"
                             quality={80}
                             sizes="34vw"
@@ -274,7 +274,7 @@ export default function FeaturedProducts() {
                                   src={product.image}
                                   alt={product.name}
                                   fill
-                                  className="object-contain bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
+                                  className="object-cover bg-neutral-100 transform group-hover:scale-105 transition-transform duration-700"
                                   loading="lazy"
                                   quality={75}
                                   sizes="(max-width: 640px) 70vw, (max-width: 768px) 45vw, (max-width: 1024px) 30vw, 23vw"

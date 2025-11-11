@@ -248,10 +248,12 @@ export default function HeroBanner() {
         </div>
       )}
 
-      {/* Marquee Banner - Sequential Scrolling Animation */}
+      {/* Marquee Banner - Sequential Scrolling Animation with Blue Gradient */}
       {marqueeData?.enabled && (
-        <div className={`absolute bottom-0 left-0 right-0 ${getMarqueeBgColor(marqueeData.bg_color)} backdrop-blur-sm py-4 sm:py-5 overflow-hidden z-30`}>
-          <div className="relative w-full flex items-center justify-center" style={{ minHeight: '2rem' }}>
+        <div className="absolute bottom-0 left-0 right-0 overflow-hidden z-30" style={{
+          background: 'linear-gradient(to right, #1e3a8a 0%, #3b82f6 20%, #3b82f6 80%, #1e3a8a 100%)',
+        }}>
+          <div className="relative w-full flex items-center justify-center py-4 sm:py-5" style={{ minHeight: '2rem' }}>
             {fadeVisible && (
               <div 
                 className="absolute w-full flex items-center justify-center animate-marquee-single"
@@ -259,7 +261,7 @@ export default function HeroBanner() {
                   animationDuration: `${getAnimationDuration(marqueeData.speed)}ms`
                 }}
               >
-                <span className={`${getMarqueeTextColor(marqueeData.text_color)} font-semibold text-base sm:text-lg whitespace-nowrap`}>
+                <span className="text-white font-semibold text-base sm:text-lg whitespace-nowrap drop-shadow-lg">
                   {currentMarqueeText}
                 </span>
               </div>

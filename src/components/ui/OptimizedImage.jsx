@@ -36,7 +36,7 @@ const OptimizedImage = memo(function OptimizedImage({
   onLoad,
   onError,
   loading = 'lazy',
-  placeholder = 'blur',
+  placeholder = 'empty',
   objectFit = 'cover',
   ...props
 }) {

@@ -5,11 +5,10 @@ export default function Document() {
     <Html lang="id">
       <Head>
         {/* Favicon - Multiple formats untuk kompatibilitas semua browser */}
-        {/* Default fallback favicon - akan di-override oleh _app.jsx dengan CMS config */}
-        <link rel="icon" type="image/x-icon" href="/uploads/logo.ico" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo.ico" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo.ico" />
-        <link rel="shortcut icon" href="/uploads/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo_128.png" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/uploads/logo_128.png" />
         
         {/* PWA Manifest */}
         <link rel="manifest" href="/site.webmanifest" />
@@ -24,7 +23,7 @@ export default function Document() {
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="B13 Factory" />
         
-        {/* Optimized Font Loading - Defer non-critical fonts */}
+        {/* Optimized Font Loading */}
         <link
           rel="preconnect"
           href="https://fonts.googleapis.com"
@@ -35,17 +34,9 @@ export default function Document() {
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
-          media="print"
-          onLoad="this.media='all'"
         />
-        <noscript>
-          <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-            rel="stylesheet"
-          />
-        </noscript>
         
         {/* Preload Critical CSS */}
         <style
