@@ -57,7 +57,7 @@ const nextConfig = {
       // Tree shaking untuk lucide-react
       config.resolve.alias = {
         ...config.resolve.alias,
-        'lucide-react': 'lucide-react/dist/esm/index.js',
+        'lucide-react': 'lucide-react/dist/esm/lucide-react.js',
       };
     }
     
