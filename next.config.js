@@ -9,9 +9,6 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // Optimize for modern browsers
-  experimental: {
-    modern: true,
 
   // Optimize chunk splitting untuk better code splitting
   webpack: (config, { isServer }) => {
@@ -45,7 +42,6 @@ const nextConfig = {
       };
     }
     return config;
-  },
   },
   // Reduce JavaScript payload
   productionBrowserSourceMaps: false,

@@ -169,7 +169,7 @@ export default function FeaturedProducts() {
                           priority
                           quality={85}
                           sizes="(max-width: 1024px) 100vw, 66vw"
-                          objectFit="cover"
+                          objectFit="contain"
                           objectPosition="center"
                         />
                       ) : (
