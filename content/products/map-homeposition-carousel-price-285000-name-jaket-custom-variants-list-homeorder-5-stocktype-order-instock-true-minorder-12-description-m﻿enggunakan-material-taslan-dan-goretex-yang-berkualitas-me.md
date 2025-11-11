@@ -2,7 +2,7 @@
 name: Jaket Custom
 category: jaket
 price: "285000"
-originalPrice: " "
+originalPrice: "300000"
 images_section:
   home_image: /uploads/jaket1.webp
   card_image: /uploads/jaket1.webp
