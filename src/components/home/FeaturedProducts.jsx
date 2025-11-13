@@ -185,7 +185,6 @@ export default function FeaturedProducts() {
                           {featuredProduct.category}
                         </span>
                       )}
-                      {getStockTypeBadge(featuredProduct.stockType)}
                     </div>
 
                     {/* Content */}
@@ -234,7 +233,6 @@ export default function FeaturedProducts() {
                           {secondProduct.category}
                         </span>
                       )}
-                      {getStockTypeBadge(secondProduct.stockType)}
                     </div>
 
                     <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-10">
@@ -298,7 +296,6 @@ export default function FeaturedProducts() {
                                 {product.category}
                               </span>
                             )}
-                            {getStockTypeBadge(product.stockType)}
                           </div>
 
                           <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 z-10">

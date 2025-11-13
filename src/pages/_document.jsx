@@ -93,8 +93,8 @@ export default function Document() {
               "@type": "Organization",
               "name": "B13 Factory",
               "alternateName": "B13 Factory Garment & Advertising",
-              "url": process.env.NEXT_PUBLIC_SITE_URL,
-              "logo": `${process.env.NEXT_PUBLIC_SITE_URL}${logoPath}`,
+              "url": "https://b13garment.id",
+              "logo": `https://b13garment.id${logoPath}`,
               "description": "Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.",
               "address": {
                 "@type": "PostalAddress",
@@ -121,23 +121,6 @@ export default function Document() {
         <Main />
         <NextScript />
 
-        {/* Suppress React DevTools warning in development */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-                const originalConsoleLog = console.log;
-                console.log = function(...args) {
-                  if (args[0] && typeof args[0] === 'string' && args[0].includes('Download the React DevTools')) {
-                    return;
-                  }
-                  originalConsoleLog.apply(console, args);
-                };
-              }
-            `,
-          }}
-        />
-        
         {/* Noscript fallback - Improved for SEO */}
         <noscript>
           <div style={{
