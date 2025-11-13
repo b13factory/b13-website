@@ -98,7 +98,7 @@ export default function Portfolio({ initialPortfolio, initialCategories, initial
         <meta name="keywords" content="portfolio garment jember, karya konfeksi jember, contoh sablon jember, project garment, klien b13 factory, hasil produksi garment jember" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Portfolio Karya - B13 Factory Jember" />
+        <meta property="og:title" content="Portfolio Karya Terbaik - B13 Factory Jember" />
         <meta property="og:description" content="Lihat portfolio karya terbaik B13 Factory Jember dalam bidang konfeksi, garment dan advertising. Lebih dari 150+ project selesai." />
         <meta property="og:url" content="https://b13garment.id/portofolio" />
         <meta property="og:type" content="website" />
