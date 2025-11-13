@@ -1,4 +1,9 @@
+# *
 User-agent: *
 Allow: /
 
-Sitemap: https://b13factory-garmentadv.netlify.app/sitemap.xml
+# Host
+Host: https://b13garment.id
+
+# Sitemaps
+Sitemap: https://b13garment.id/sitemap.xml

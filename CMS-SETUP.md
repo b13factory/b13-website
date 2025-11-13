@@ -3,7 +3,7 @@
 ## 🎯 Akses CMS
 
 Untuk mengakses CMS dan mengedit konten website:
-1. Buka: `https://b13factory-garmentadv.netlify.app/admin`
+1. Buka: `https://b13garment.id/admin`
 2. Login menggunakan Netlify Identity atau GitHub
 
 ## 🔐 Setup Netlify Identity (Required)
@@ -131,7 +131,6 @@ Jika ada masalah:
 
 ## 🔗 Links Penting
 
-- Website: https://b13factory-garmentadv.netlify.app
-- CMS Admin: https://b13factory-garmentadv.netlify.app/admin
+- Website: https://b13garment.id
+- CMS Admin: https://b13garment.id/admin
 - Netlify Dashboard: https://app.netlify.com
-- GitHub Repo: https://github.com/ryantowes7/b13-website
