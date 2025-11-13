@@ -152,8 +152,18 @@ export default function Produk({ initialProducts, initialCategories }) {
   return (
     <>
       <Head>
-        <title>Produk - B13 Factory</title>
-        <meta name="description" content="Lihat berbagai produk garment dan advertising berkualitas dari B13 Factory" />
+        <title>Produk Garment & Advertising - B13 Factory Jember</title>
+        <meta name="description" content="Katalog lengkap produk garment dan konfeksi B13 Factory Jember: Kaos custom, jersey, seragam, jaket, kemeja. Kualitas premium dengan harga kompetitif. Sablon & bordir berkualitas." />
+        <meta name="keywords" content="produk garment jember, kaos custom jember, jersey printing jember, seragam kantor jember, jaket custom, sablon kaos jember, bordir jember, konfeksi jember" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Produk Garment & Konfeksi - B13 Factory Jember" />
+        <meta property="og:description" content="Katalog lengkap produk garment dan konfeksi B13 Factory Jember: Kaos custom, jersey, seragam, jaket, kemeja. Kualitas premium dengan harga kompetitif." />
+        <meta property="og:url" content="https://b13garment.id/produk" />
+        <meta property="og:type" content="website" />
+        
+        {/* Canonical */}
+        <link rel="canonical" href="https://b13garment.id/produk" />
       </Head>
 
       {/* Dynamic Banner based on Category */}

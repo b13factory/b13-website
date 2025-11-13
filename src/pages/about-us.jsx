@@ -32,8 +32,18 @@ export default function AboutUs({ aboutData }) {
   return (
     <>
       <Head>
-        <title>About Us - B13 Factory</title>
-        <meta name="description" content="Tentang B13 Factory - Specialist garment dan advertising dengan pengalaman lebih dari 5 tahun" />
+        <title>Tentang Kami - B13 Factory | Konfeksi & Garment Jember</title>
+        <meta name="description" content="B13 Factory adalah specialist konfeksi, garment dan advertising di Jember dengan pengalaman lebih dari 15 tahun. Jasa sablon, bordir, dan produksi kaos berkualitas." />
+        <meta name="keywords" content="konfeksi jember, garment jember, sablon jember, bordir jember, kaos custom jember, tentang b13 factory" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Tentang Kami - B13 Factory | Garment & Advertising Jember" />
+        <meta property="og:description" content="B13 Factory adalah specialist konfeksi, garment dan advertising di Jember dengan pengalaman lebih dari 15 tahun." />
+        <meta property="og:url" content="https://b13garment.id/about-us" />
+        <meta property="og:type" content="website" />
+        
+        {/* Canonical */}
+        <link rel="canonical" href="https://b13garment.id/about-us" />
       </Head>
 
       {/* Banner Section */}

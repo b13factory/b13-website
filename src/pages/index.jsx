@@ -20,8 +20,8 @@ export default function Home({ siteData }) {
         <meta property="og:title" content={siteData?.title || 'B13 Factory - Garment & Advertising Specialist'} />
         <meta property="og:description" content={siteData?.description || 'Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.'} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://b13factory-garment.netlify.app/" />
-        <meta property="og:image" content="/uploads/og-image.jpg" />
+        <meta property="og:url" content="https://b13garment.id/" />
+        <meta property="og:image" content="https://b13garment.id/uploads/og-image.jpg" />
         <meta property="og:site_name" content="B13 Factory" />
         <meta property="og:locale" content="id_ID" />
         
@@ -29,10 +29,10 @@ export default function Home({ siteData }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={siteData?.title || 'B13 Factory - Garment & Advertising Specialist'} />
         <meta name="twitter:description" content={siteData?.description || 'Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.'} />
-        <meta name="twitter:image" content="/uploads/og-image.jpg" />
+        <meta name="twitter:image" content="https://b13garment.id/uploads/og-image.jpg" />
         
         {/* Additional Meta Tags */}
-        <link rel="canonical" href="https://b13factory-garment.netlify.app/" />
+        <link rel="canonical" href="https://b13garment.id/" />
         <meta name="robots" content="index, follow" />
         <meta name="theme-color" content="#0066B3" />
         
@@ -45,7 +45,7 @@ export default function Home({ siteData }) {
               "@type": "LocalBusiness",
               "name": "B13 Factory",
               "description": "Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.",
-              "url": "https://b13factory-garment.netlify.app",
+              "url": "https://b13garment.id",
               "telephone": "+62-812-3456-7890",
               "email": "b13factory@gmail.com",
               "address": {

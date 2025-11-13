@@ -84,18 +84,19 @@ export default function Document() {
         {/* Preconnect untuk CDN dan APIs */}
         <link rel="preconnect" href={process.env.NEXT_PUBLIC_SITE_URL} />
         
-        {/* Structured Data untuk Organization */}
+        {/* Structured Data untuk Organization & LocalBusiness */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Organization",
+              "@type": "LocalBusiness",
               "name": "B13 Factory",
               "alternateName": "B13 Factory Garment & Advertising",
               "url": "https://b13garment.id",
               "logo": `https://b13garment.id${logoPath}`,
-              "description": "Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.",
+              "image": `https://b13garment.id${logoPath}`,
+              "description": "Specialist konfeksi, garment dan advertising di Jember. Jasa sablon, bordir, banner, kaos custom, jersey, seragam, dan berbagai kebutuhan promosi bisnis profesional dengan pengalaman lebih dari 15 tahun.",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "JL. Arowana, Perum Kebon Agung Indah",
@@ -104,6 +105,11 @@ export default function Document() {
                 "postalCode": "68161",
                 "addressCountry": "ID"
               },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "-8.1844",
+                "longitude": "113.6680"
+              },
               "contactPoint": {
                 "@type": "ContactPoint",
                 "telephone": "+62-812-3456-7890",
@@ -111,6 +117,60 @@ export default function Document() {
                 "email": "b13factory@gmail.com",
                 "areaServed": "ID",
                 "availableLanguage": ["Indonesian", "English"]
+              },
+              "priceRange": "$$",
+              "openingHours": "Mo-Su 09:00-17:00",
+              "areaServed": [
+                {
+                  "@type": "City",
+                  "name": "Jember"
+                },
+                {
+                  "@type": "State",
+                  "name": "Jawa Timur"
+                },
+                {
+                  "@type": "Country",
+                  "name": "Indonesia"
+                }
+              ],
+              "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Produk Garment & Advertising",
+                "itemListElement": [
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Sablon Kaos",
+                      "description": "Jasa sablon kaos berkualitas tinggi dengan berbagai teknik"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Bordir",
+                      "description": "Jasa bordir untuk berbagai jenis produk garment"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Product",
+                      "name": "Kaos Custom",
+                      "description": "Produksi kaos custom sesuai desain"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Product",
+                      "name": "Jersey & Seragam",
+                      "description": "Jersey olahraga dan seragam kantor"
+                    }
+                  }
+                ]
               },
               "sameAs": []
             })
