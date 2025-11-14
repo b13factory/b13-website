@@ -13,7 +13,7 @@ export default function Document() {
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href={faviconPath} />
         <link rel="icon" type="image/png" sizes="16x16" href={faviconPath} />
-        <link rel="shortcut icon\" href="/favicon.ico" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href={logoPath} />
         <link rel="apple-touch-icon" sizes="152x152" href={logoPath} />
         <link rel="apple-touch-icon" sizes="120x120" href={logoPath} />
@@ -189,7 +189,7 @@ export default function Document() {
             backgroundColor: '#f3f4f6'
           }}>
             <h1 style={{ marginBottom: '10px' }}>B13 Factory - Garment & Advertising</h1>
-            <p>Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun.</p>
+            <p>Specialist dalam garment dan advertising dengan pengalaman lebih dari 15 tahun.</p>
             <p style={{ marginTop: '20px', fontSize: '14px', color: '#666' }}>
               Untuk pengalaman terbaik, mohon aktifkan JavaScript di browser Anda.
             </p>

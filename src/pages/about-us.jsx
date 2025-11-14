@@ -222,7 +222,7 @@ export async function getStaticProps() {
     
     let aboutData = {
       banner_title: 'About B13 Factory',
-      banner_subtitle: 'Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun',
+      banner_subtitle: 'Specialist dalam garment dan advertising dengan pengalaman lebih dari 15 tahun',
       company_title: 'Garment & Advertising Specialist',
       company_description: '**B13 Factory** telah berdiri sejak 2019 dan telah dipercaya oleh berbagai klien.',
       company_stats: {
@@ -275,7 +275,7 @@ export async function getStaticProps() {
       props: {
         aboutData: {
           banner_title: 'About B13 Factory',
-          banner_subtitle: 'Specialist dalam garment dan advertising dengan pengalaman lebih dari 5 tahun',
+          banner_subtitle: 'Specialist dalam garment dan advertising dengan pengalaman lebih dari 15 tahun',
           company_title: 'Garment & Advertising Specialist',
           company_description: '**B13 Factory** telah berdiri sejak 2019 dan telah dipercaya oleh berbagai klien.',
           company_stats: {
