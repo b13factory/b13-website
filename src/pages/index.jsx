@@ -21,15 +21,19 @@ export default function Home({ siteData }) {
         <meta property="og:description" content={siteData?.description || 'Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.'} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://b13garment.id/" />
-        <meta property="og:image" content="https://b13garment.id/uploads/og-image.jpg" />
+        <meta property="og:image" content="https://b13garment.id/uploads/logo_128.png" />
+        <meta property="og:image:width" content="128" />
+        <meta property="og:image:height" content="128" />
+        <meta property="og:image:alt" content="B13 Factory Logo" />
         <meta property="og:site_name" content="B13 Factory" />
         <meta property="og:locale" content="id_ID" />
         
         {/* Twitter Card Meta Tags */}
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content={siteData?.title || 'B13 Factory - Garment & Advertising Specialist'} />
         <meta name="twitter:description" content={siteData?.description || 'Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.'} />
-        <meta name="twitter:image" content="https://b13garment.id/uploads/og-image.jpg" />
+        <meta name="twitter:image" content="https://b13garment.id/uploads/logo_128.png" />
+        <meta name="twitter:image:alt" content="B13 Factory Logo" />
         
         {/* Additional Meta Tags */}
         <link rel="canonical" href="https://b13garment.id/" />
@@ -44,8 +48,11 @@ export default function Home({ siteData }) {
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               "name": "B13 Factory",
+              "alternateName": "B13 Factory Garment & Advertising",
               "description": "Specialist dalam garment dan advertising. Jasa sablon, bordir, banner, dan berbagai kebutuhan promosi bisnis profesional.",
               "url": "https://b13garment.id",
+              "logo": "https://b13garment.id/uploads/logo_128.png",
+              "image": "https://b13garment.id/uploads/logo_128.png",
               "telephone": "+62-812-3456-7890",
               "email": "b13factory@gmail.com",
               "address": {

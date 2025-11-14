@@ -172,7 +172,7 @@ export default function Document() {
                   }
                 ]
               },
-              "sameAs": []
+              "sameAs": ["https://www.instagram.com/b13.factory"]
             })
           }}
         />

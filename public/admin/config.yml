@@ -35,6 +35,7 @@ collections:
           - { label: "Favicon", name: "favicon", widget: "image", required: false }
           - { label: "Contact Email", name: "contact_email", widget: "string" }
           - { label: "Contact Phone", name: "contact_phone", widget: "string" }
+          - { label: "Instagram URL", name: "instagram_url", widget: "string", required: false, hint: "URL Instagram lengkap (contoh: https://www.instagram.com/b13.factory)" }
           - { label: "Address", name: "address", widget: "text" }
           - label: "Header Navigation"
             name: "header_navigation"
